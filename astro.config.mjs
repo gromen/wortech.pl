@@ -6,7 +6,9 @@ import netlify from '@astrojs/netlify';
 export default defineConfig({
   site: 'https://wortech.pl',
   output: 'server',
-  adapter: netlify(),
+  adapter: netlify({
+    edgeMiddleware: true,
+  }),
   vite: {
     plugins: [tailwindcss()],
   },
