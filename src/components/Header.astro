@@ -1,0 +1,58 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+import MobileMenu from './MobileMenu.astro';
+
+const currentPath = Astro.url.pathname;
+
+const links = [
+  { href: '/', label: 'Strona główna' },
+  { href: '/projekty', label: 'Projekty' },
+  { href: '/kontakt', label: 'Kontakt' },
+];
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/5 light:bg-white/80 light:border-black/5">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2">
+        <img
+          src="/logo-light.svg"
+          alt="WORTECH"
+          class="h-8 light:hidden"
+        />
+        <img
+          src="/logo-dark.svg"
+          alt="WORTECH"
+          class="h-8 hidden light:block"
+        />
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="hidden md:flex items-center gap-8">
+        {links.map((link) => (
+          <a
+            href={link.href}
+            class:list={[
+              'text-sm font-medium transition-colors',
+              currentPath === link.href
+                ? 'text-orange'
+                : 'text-dark-text hover:text-orange light:text-charcoal light:hover:text-orange',
+            ]}
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-2">
+        <ThemeToggle />
+        <MobileMenu />
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Spacer for fixed header -->
+<div class="h-16"></div>

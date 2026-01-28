@@ -1,0 +1,71 @@
+---
+const currentPath = Astro.url.pathname;
+
+const links = [
+  { href: '/', label: 'Strona główna' },
+  { href: '/projekty', label: 'Projekty' },
+  { href: '/kontakt', label: 'Kontakt' },
+];
+---
+
+<button
+  id="mobile-menu-btn"
+  type="button"
+  aria-label="Otwórz menu"
+  class="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors light:hover:bg-black/10"
+>
+  <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <path id="menu-icon-bars" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+    <path id="menu-icon-close" class="hidden" stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+  </svg>
+</button>
+
+<div
+  id="mobile-menu"
+  class="hidden fixed inset-0 top-16 z-40 bg-[#0a0a0a]/95 backdrop-blur-lg md:hidden"
+>
+  <nav class="flex flex-col items-center gap-6 pt-12">
+    {links.map((link) => (
+      <a
+        href={link.href}
+        class:list={[
+          'text-lg font-medium transition-colors',
+          currentPath === link.href
+            ? 'text-orange'
+            : 'text-dark-text hover:text-orange light:text-charcoal light:hover:text-orange',
+        ]}
+      >
+        {link.label}
+      </a>
+    ))}
+  </nav>
+</div>
+
+<script is:inline>
+  (function () {
+    const btn = document.getElementById('mobile-menu-btn');
+    if (!btn || btn.dataset.init) return;
+    btn.dataset.init = 'true';
+
+    const menu = document.getElementById('mobile-menu');
+    const iconBars = document.getElementById('menu-icon-bars');
+    const iconClose = document.getElementById('menu-icon-close');
+
+    btn.addEventListener('click', function () {
+      const isOpen = !menu.classList.contains('hidden');
+      menu.classList.toggle('hidden');
+      iconBars.classList.toggle('hidden');
+      iconClose.classList.toggle('hidden');
+      document.body.style.overflow = isOpen ? '' : 'hidden';
+    });
+
+    menu.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        menu.classList.add('hidden');
+        iconBars.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+        document.body.style.overflow = '';
+      });
+    });
+  })();
+</script>

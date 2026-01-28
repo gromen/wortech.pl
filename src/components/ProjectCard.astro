@@ -1,0 +1,25 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  date: string;
+  type: string;
+}
+
+const { title, description, date, type } = Astro.props;
+---
+
+<article class="card rounded-lg p-6 flex flex-col">
+  <div class="flex items-center gap-3 mb-4">
+    <span class="text-xs font-medium px-3 py-1 rounded-full bg-orange/10 text-orange">
+      {type}
+    </span>
+    <span class="text-xs text-dark-muted light:text-gray-500">{date}</span>
+  </div>
+
+  <h3 class="heading-display text-lg mb-3">{title}</h3>
+
+  <p class="text-sm text-dark-muted light:text-gray-600 leading-relaxed flex-1">
+    {description}
+  </p>
+</article>

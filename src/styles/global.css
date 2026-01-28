@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+@custom-variant light (.light &);
+
+@theme {
+  --font-sans: "Inter", "system-ui", sans-serif;
+  --font-display: "Space Grotesk", "system-ui", sans-serif;
+
+  --color-charcoal: #2d3436;
+  --color-orange: #e67e22;
+  --color-orange-light: #f39c12;
+  --color-blue-accent: #3498db;
+  --color-dark-bg: #0a0a0a;
+  --color-dark-surface: #111111;
+  --color-dark-border: #1a1a1a;
+  --color-dark-text: #e5e5e5;
+  --color-dark-muted: #888888;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  /* Dark mode (default) */
+  html:not(.light) body {
+    background-color: var(--color-dark-bg);
+    color: var(--color-dark-text);
+  }
+
+  html:not(.light) body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  /* Light mode */
+  html.light body {
+    background-color: #f8f9fa;
+    color: #1a1a1a;
+  }
+
+  html.light body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+}
+
+@layer components {
+  .section-border {
+    border-top: 1px solid var(--color-dark-border);
+  }
+
+  html.light .section-border {
+    border-top-color: #e0e0e0;
+  }
+
+  .heading-display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, var(--color-orange) 0%, var(--color-orange-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .card {
+    border: 1px solid var(--color-dark-border);
+    background-color: var(--color-dark-surface);
+    transition: border-color 0.2s;
+  }
+
+  .card:hover {
+    border-color: var(--color-orange);
+  }
+
+  html.light .card {
+    border-color: #e0e0e0;
+    background-color: #ffffff;
+  }
+
+  html.light .card:hover {
+    border-color: var(--color-orange);
+  }
+}

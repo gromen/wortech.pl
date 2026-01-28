@@ -1,0 +1,46 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="section-border mt-auto">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Logo & opis -->
+      <div>
+        <img src="/logo-light.svg" alt="WORTECH" class="h-8 mb-4 light:hidden" />
+        <img src="/logo-dark.svg" alt="WORTECH" class="h-8 mb-4 hidden light:block" />
+        <p class="text-dark-muted text-sm light:text-gray-600">
+          Podwykonawstwo robót drogowych.<br />
+          Działamy na terenie całej Polski od 2019 roku.
+        </p>
+      </div>
+
+      <!-- Nawigacja -->
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wider mb-4 text-dark-muted light:text-gray-500">Nawigacja</h3>
+        <nav class="flex flex-col gap-2">
+          <a href="/" class="text-sm hover:text-orange transition-colors">Strona główna</a>
+          <a href="/projekty" class="text-sm hover:text-orange transition-colors">Projekty</a>
+          <a href="/kontakt" class="text-sm hover:text-orange transition-colors">Kontakt</a>
+        </nav>
+      </div>
+
+      <!-- Dane kontaktowe -->
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wider mb-4 text-dark-muted light:text-gray-500">Kontakt</h3>
+        <div class="flex flex-col gap-2 text-sm">
+          <span>WORTECH Marcin Gromek</span>
+          <span>ul. Topolowa 22</span>
+          <span>05-092 Łomianki</span>
+          <span>NIP: 1182211282</span>
+          <a href="tel:+48503390957" class="hover:text-orange transition-colors">+48 503 390 957</a>
+          <a href="mailto:biuro@wortech.pl" class="hover:text-orange transition-colors">biuro@wortech.pl</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-border mt-8 pt-8 text-center text-sm text-dark-muted light:text-gray-500">
+      &copy; {year} WORTECH Marcin Gromek. Wszelkie prawa zastrzeżone.
+    </div>
+  </div>
+</footer>
