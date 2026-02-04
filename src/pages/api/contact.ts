@@ -13,6 +13,8 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const apiKey = import.meta.env.RESEND_API_KEY;
+    const contactEmail = import.meta.env.CONTACT_EMAIL || 'biuro@wortech.pl';
+
     if (!apiKey) {
       console.error('RESEND_API_KEY is not set');
       return new Response(JSON.stringify({ error: 'Konfiguracja serwera niekompletna.' }), {
@@ -25,7 +27,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     await resend.emails.send({
       from: 'WORTECH Formularz <onboarding@resend.dev>',
-      to: 'biuro@wortech.pl',
+      to: contactEmail,
       replyTo: email,
       subject: `Formularz kontaktowy: ${name}`,
       html: `

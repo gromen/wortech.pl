@@ -12,6 +12,7 @@
     "@astrojs/netlify": "^6.6.4",
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^5.16.15",
+    "netlify-cli": "^23.14.0",
     "resend": "^6.9.1",
     "tailwindcss": "^4.1.18"
   }
