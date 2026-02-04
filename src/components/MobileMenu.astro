@@ -2,9 +2,9 @@
 const currentPath = Astro.url.pathname;
 
 const links = [
-  { href: '/', label: 'Strona główna' },
-  { href: '/projekty', label: 'Projekty' },
-  { href: '/kontakt', label: 'Kontakt' },
+  { href: "/", label: "Strona główna" },
+  { href: "/projekty", label: "Projekty" },
+  { href: "/kontakt", label: "Kontakt" },
 ];
 ---
 
@@ -14,58 +14,178 @@ const links = [
   aria-label="Otwórz menu"
   class="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors light:hover:bg-black/10"
 >
-  <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-    <path id="menu-icon-bars" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-    <path id="menu-icon-close" class="hidden" stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+  <svg
+    class="w-6 h-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    stroke-width="2"
+  >
+    <path
+      id="menu-icon-bars"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M4 6h16M4 12h16M4 18h16"></path>
+    <path
+      id="menu-icon-close"
+      class="hidden"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M6 18L18 6M6 6l12 12"></path>
   </svg>
 </button>
 
+<!-- Fullscreen menu container -->
 <div
   id="mobile-menu"
-  class="hidden fixed inset-0 top-16 z-40 bg-[#0a0a0a]/95 backdrop-blur-lg md:hidden"
+  class="mobile-menu-hidden fixed inset-x-0 top-16 bottom-0 z-[100] md:hidden"
 >
-  <nav class="flex flex-col items-center gap-6 pt-12">
-    {links.map((link) => (
+  <!-- Backdrop overlay z blur -->
+  <div
+    id="mobile-menu-backdrop"
+    class="absolute inset-0 bg-black/70 mobile-menu-backdrop"
+  >
+  </div>
+
+  <!-- Menu content -->
+  <div
+    class="relative flex flex-col h-full bg-black light:bg-white mobile-menu-content"
+  >
+    <nav
+      class="flex flex-col items-center gap-8 py-16 px-6 flex-1 dark:bg-black light:bg-gray-50"
+    >
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class:list={[
+              "text-xl font-medium transition-colors",
+              currentPath === link.href ?
+                "text-orange"
+              : "text-dark-text hover:text-orange light:text-charcoal light:hover:text-orange",
+            ]}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <!-- Dolna sekcja -->
+    <div
+      class="p-6 border-t border-white/10 light:border-black/10 bg-black light:bg-gray-50"
+    >
       <a
-        href={link.href}
-        class:list={[
-          'text-lg font-medium transition-colors',
-          currentPath === link.href
-            ? 'text-orange'
-            : 'text-dark-text hover:text-orange light:text-charcoal light:hover:text-orange',
-        ]}
+        href="tel:+48503390957"
+        class="flex items-center justify-center gap-3 text-orange font-medium text-lg"
       >
-        {link.label}
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
+          ></path>
+        </svg>
+        +48 503 390 957
       </a>
-    ))}
-  </nav>
+    </div>
+  </div>
 </div>
+
+<style>
+  .mobile-menu-hidden {
+    display: none;
+  }
+
+  .mobile-menu-visible {
+    display: block;
+  }
+
+  .mobile-menu-backdrop {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .mobile-menu-backdrop.active {
+    opacity: 1;
+  }
+
+  .mobile-menu-content {
+    transform: translateY(-20px);
+    opacity: 0;
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
+  }
+
+  .mobile-menu-content.active {
+    transform: translateY(0);
+    opacity: 1;
+  }
+</style>
 
 <script is:inline>
   (function () {
-    const btn = document.getElementById('mobile-menu-btn');
+    const btn = document.getElementById("mobile-menu-btn");
     if (!btn || btn.dataset.init) return;
-    btn.dataset.init = 'true';
+    btn.dataset.init = "true";
 
-    const menu = document.getElementById('mobile-menu');
-    const iconBars = document.getElementById('menu-icon-bars');
-    const iconClose = document.getElementById('menu-icon-close');
+    const menu = document.getElementById("mobile-menu");
+    const backdrop = document.getElementById("mobile-menu-backdrop");
+    const content = menu.querySelector(".mobile-menu-content");
+    const iconBars = document.getElementById("menu-icon-bars");
+    const iconClose = document.getElementById("menu-icon-close");
 
-    btn.addEventListener('click', function () {
-      const isOpen = !menu.classList.contains('hidden');
-      menu.classList.toggle('hidden');
-      iconBars.classList.toggle('hidden');
-      iconClose.classList.toggle('hidden');
-      document.body.style.overflow = isOpen ? '' : 'hidden';
+    function openMenu() {
+      menu.classList.remove("mobile-menu-hidden");
+      menu.classList.add("mobile-menu-visible");
+      iconBars.classList.add("hidden");
+      iconClose.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+
+      requestAnimationFrame(() => {
+        backdrop.classList.add("active");
+        content.classList.add("active");
+      });
+    }
+
+    function closeMenu() {
+      backdrop.classList.remove("active");
+      content.classList.remove("active");
+      iconBars.classList.remove("hidden");
+      iconClose.classList.add("hidden");
+      document.body.style.overflow = "";
+
+      setTimeout(() => {
+        menu.classList.add("mobile-menu-hidden");
+        menu.classList.remove("mobile-menu-visible");
+      }, 300);
+    }
+
+    btn.addEventListener("click", function () {
+      const isHidden = menu.classList.contains("mobile-menu-hidden");
+      if (isHidden) {
+        openMenu();
+      } else {
+        closeMenu();
+      }
     });
 
-    menu.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () {
-        menu.classList.add('hidden');
-        iconBars.classList.remove('hidden');
-        iconClose.classList.add('hidden');
-        document.body.style.overflow = '';
-      });
+    backdrop.addEventListener("click", function (e) {
+      e.stopPropagation();
+      closeMenu();
+    });
+
+    menu.querySelectorAll("nav a").forEach(function (link) {
+      link.addEventListener("click", closeMenu);
     });
   })();
 </script>

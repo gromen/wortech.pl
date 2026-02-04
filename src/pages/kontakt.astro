@@ -1,6 +1,7 @@
 ---
 import ContactForm from "../components/ContactForm.astro";
 import Layout from "../layouts/Layout.astro";
+import { siteConfig } from "../config";
 ---
 
 <Layout
@@ -53,9 +54,9 @@ import Layout from "../layouts/Layout.astro";
             </svg>
             <h3 class="font-semibold mb-1">Telefon</h3>
             <a
-              href="tel:+48503390957"
+              href={`tel:${siteConfig.company.phone.replace(/\s/g, '')}`}
               class="text-dark-muted light:text-gray-600 hover:text-orange transition-colors"
-              >+48 503 390 957</a
+              >{siteConfig.company.phone}</a
             >
           </div>
 
@@ -75,9 +76,9 @@ import Layout from "../layouts/Layout.astro";
             </svg>
             <h3 class="font-semibold mb-1">Email</h3>
             <a
-              href="mailto:biuro@wortech.pl"
+              href={`mailto:${siteConfig.company.email}`}
               class="text-dark-muted light:text-gray-600 hover:text-orange transition-colors"
-              >biuro@wortech.pl</a
+              >{siteConfig.company.email}</a
             >
           </div>
 
@@ -100,11 +101,7 @@ import Layout from "../layouts/Layout.astro";
               ></path>
             </svg>
             <h3 class="font-semibold mb-1">Adres</h3>
-            <p class="text-dark-muted light:text-gray-600">
-              WORTECH Piotr Czyronis<br />
-              ul. Sierpińskiego 3 lok. 143<br />
-              02-122 Warszawa
-            </p>
+            <p class="text-dark-muted light:text-gray-600" set:html={`${siteConfig.company.name}<br />${siteConfig.company.street}<br />${siteConfig.company.city}`} />
           </div>
 
           <div class="card rounded-lg p-6">
@@ -122,7 +119,7 @@ import Layout from "../layouts/Layout.astro";
               ></path>
             </svg>
             <h3 class="font-semibold mb-1">NIP</h3>
-            <p class="text-dark-muted light:text-gray-600">7591555229</p>
+            <p class="text-dark-muted light:text-gray-600">{siteConfig.company.nip}</p>
           </div>
         </div>
       </div>

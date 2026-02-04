@@ -1,4 +1,6 @@
 ---
+import { siteConfig } from '../config';
+
 const year = new Date().getFullYear();
 ---
 
@@ -52,16 +54,16 @@ const year = new Date().getFullYear();
           Kontakt
         </h3>
         <div class="flex flex-col gap-2 text-sm">
-          <span>WORTECH Piotr Czyronis</span>
-          <span>ul. Sierpińskiego 3 lok. 143</span>
-          <span>02-122 Warszawa</span>
-          <span>NIP: 7591555229</span>
-          <a href="tel:+48503390957" class="hover:text-orange transition-colors"
-            >+48 503 390 957</a
+          <span>{siteConfig.company.name}</span>
+          <span>{siteConfig.company.street}</span>
+          <span>{siteConfig.company.city}</span>
+          <span>NIP: {siteConfig.company.nip}</span>
+          <a href={`tel:${siteConfig.company.phone.replace(/\s/g, '')}`} class="hover:text-orange transition-colors"
+            >{siteConfig.company.phone}</a
           >
           <a
-            href="mailto:biuro@wortech.pl"
-            class="hover:text-orange transition-colors">biuro@wortech.pl</a
+            href={`mailto:${siteConfig.company.email}`}
+            class="hover:text-orange transition-colors">{siteConfig.company.email}</a
           >
         </div>
       </div>
@@ -70,14 +72,14 @@ const year = new Date().getFullYear();
     <div
       class="section-border mt-8 pt-8 text-center text-sm text-dark-muted light:text-gray-500"
     >
-      <p>&copy; {year} WORTECH Piotr Czyronis. Wszelkie prawa zastrzeżone.</p>
+      <p>&copy; {year} {siteConfig.company.name}. Wszelkie prawa zastrzeżone.</p>
       <p class="mt-2 text-xs opacity-70">
         Realizacja: <a
-          href="https://www.linkedin.com/in/gromekmarcin/"
+          href={siteConfig.author.linkedin}
           target="_blank"
           rel="noopener noreferrer"
           class="hover:text-orange transition-colors inline-flex items-center gap-1"
-          >Marcin Gromek <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a
+          >{siteConfig.author.name} <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a
         >
       </p>
     </div>
