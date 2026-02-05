@@ -25,22 +25,40 @@ export const POST: APIRoute = async ({ request }) => {
 
     const resend = new Resend(apiKey);
 
-    await resend.emails.send({
-      from: 'WORTECH Formularz <onboarding@resend.dev>',
+    const { data, error } = await resend.emails.send({
+      from: 'WORTECH Formularz <formularz@wortech.pl>',
       to: contactEmail,
       replyTo: email,
       subject: `Formularz kontaktowy: ${name}`,
       html: `
-        <h2>Nowa wiadomość z formularza kontaktowego</h2>
-        <p><strong>Imię i nazwisko:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Telefon:</strong> ${phone || 'Nie podano'}</p>
-        <hr />
-        <p><strong>Wiadomość:</strong></p>
-        <p>${message.replace(/\n/g, '<br />')}</p>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #e67e22; border-bottom: 2px solid #e67e22; padding-bottom: 10px;">
+            Nowa wiadomość z formularza kontaktowego
+          </h2>
+          <p><strong>Imię i nazwisko:</strong> ${name}</p>
+          <p><strong>Email:</strong> <a href="mailto:${email}" style="color: #e67e22;">${email}</a></p>
+          <p><strong>Telefon:</strong> ${phone || 'Nie podano'}</p>
+          <p><strong>Wiadomość:</strong></p>
+          <div style="background: #f5f5f5; padding: 15px; border-left: 3px solid #e67e22;">
+            ${message.replace(/\n/g, '<br />')}
+          </div>
+          <hr style="margin-top: 30px; border: none; border-top: 1px solid #ddd;">
+          <p style="color: #888; font-size: 12px;">
+            Wiadomość wysłana przez formularz na stronie wortech.pl
+          </p>
+        </div>
       `,
     });
 
+    if (error) {
+      console.error('Resend error:', error);
+      return new Response(JSON.stringify({ error: 'Błąd wysyłania wiadomości.' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    console.log('Email sent successfully:', data?.id);
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
