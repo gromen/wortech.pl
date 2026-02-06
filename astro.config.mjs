@@ -1,12 +1,14 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
-import tailwindcss from '@tailwindcss/vite';
-import netlify from '@astrojs/netlify';
+import netlify from "@astrojs/netlify";
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  site: 'https://wortech.pl',
-  output: 'server',
-  adapter: netlify(),
+  site: "https://wortech.pl",
+  output: "server",
+  adapter: netlify({
+    edgeMiddleware: true,
+  }),
   vite: {
     plugins: [tailwindcss()],
   },
