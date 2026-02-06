@@ -38,21 +38,14 @@ const links = [
 <!-- Fullscreen menu container -->
 <div
   id="mobile-menu"
-  class="mobile-menu-hidden fixed inset-x-0 top-16 bottom-0 z-[100] md:hidden"
+  class="mobile-menu-hidden fixed inset-x-0 top-16 bottom-0 z-100 md:hidden"
 >
-  <!-- Backdrop overlay z blur -->
-  <div
-    id="mobile-menu-backdrop"
-    class="absolute inset-0 bg-[#0d1b2a]/70 mobile-menu-backdrop"
-  >
-  </div>
-
   <!-- Menu content -->
   <div
-    class="relative flex flex-col h-full bg-[#0d1b2a] light:bg-white mobile-menu-content"
+    class="relative flex flex-col h-full bg-dark-bg light:bg-white mobile-menu-content"
   >
     <nav
-      class="flex flex-col items-center gap-8 py-16 px-6 flex-1 dark:bg-[#0d1b2a] light:bg-gray-50"
+      class="flex flex-col items-center gap-8 py-16 px-6 flex-1 dark:bg-dark-bg light:bg-gray-50"
     >
       {
         links.map((link) => (
@@ -73,7 +66,7 @@ const links = [
 
     <!-- Dolna sekcja -->
     <div
-      class="p-6 border-t border-white/10 light:border-black/10 bg-[#0d1b2a] light:bg-gray-50"
+      class="p-6 border-t border-white/10 light:border-black/10 bg-dark-bg light:bg-gray-50"
     >
       <a
         href="tel:+48503390957"
@@ -107,17 +100,6 @@ const links = [
     display: block;
   }
 
-  .mobile-menu-backdrop {
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .mobile-menu-backdrop.active {
-    opacity: 1;
-  }
-
   .mobile-menu-content {
     transform: translateY(-20px);
     opacity: 0;
@@ -139,7 +121,10 @@ const links = [
     btn.dataset.init = "true";
 
     const menu = document.getElementById("mobile-menu");
-    const backdrop = document.getElementById("mobile-menu-backdrop");
+    // Move overlay to body to escape header's backdrop-filter containing block
+    if (menu && menu.parentElement !== document.body) {
+      document.body.appendChild(menu);
+    }
     const content = menu.querySelector(".mobile-menu-content");
     const iconBars = document.getElementById("menu-icon-bars");
     const iconClose = document.getElementById("menu-icon-close");
@@ -152,13 +137,11 @@ const links = [
       document.body.style.overflow = "hidden";
 
       requestAnimationFrame(() => {
-        backdrop.classList.add("active");
         content.classList.add("active");
       });
     }
 
     function closeMenu() {
-      backdrop.classList.remove("active");
       content.classList.remove("active");
       iconBars.classList.remove("hidden");
       iconClose.classList.add("hidden");
@@ -177,11 +160,6 @@ const links = [
       } else {
         closeMenu();
       }
-    });
-
-    backdrop.addEventListener("click", function (e) {
-      e.stopPropagation();
-      closeMenu();
     });
 
     menu.querySelectorAll("nav a").forEach(function (link) {

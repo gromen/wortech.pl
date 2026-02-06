@@ -6,6 +6,7 @@ import { defineConfig } from "astro/config";
 export default defineConfig({
   site: "https://wortech.pl",
   output: "server",
+  server: { host: true },
   adapter: netlify({
     edgeMiddleware: true,
   }),
