@@ -1,9 +1,25 @@
 import { defineMiddleware } from "astro:middleware";
 
+function isMaintenanceEnabled(): boolean {
+  // Deno runtime (Netlify Edge Functions) — most reliable for edge
+  try {
+    // @ts-ignore - Deno global
+    if (typeof Deno !== "undefined") {
+      // @ts-ignore
+      return Deno.env.get("MAINTENANCE_MODE") === "true";
+    }
+  } catch {}
+  // Node.js runtime fallback
+  try {
+    if (typeof process !== "undefined" && process.env) {
+      return process.env.MAINTENANCE_MODE === "true";
+    }
+  } catch {}
+  return false;
+}
+
 export const onRequest = defineMiddleware(async (context, next) => {
-  const maintenanceMode =
-    import.meta.env.MAINTENANCE_MODE === "true" ||
-    process.env.MAINTENANCE_MODE === "true";
+  const maintenanceMode = isMaintenanceEnabled();
   const { pathname, searchParams } = context.url;
 
   // Check if bypass query param is present
