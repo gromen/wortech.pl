@@ -1,13 +1,4 @@
 {
-  "name": "wortech-tmp",
-  "type": "module",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
   "dependencies": {
     "@astrojs/netlify": "^6.6.4",
     "@tailwindcss/vite": "^4.1.18",
@@ -15,5 +6,15 @@
     "netlify-cli": "^23.14.0",
     "resend": "^6.9.1",
     "tailwindcss": "^4.1.18"
-  }
+  },
+  "name": "wortech-tmp",
+  "scripts": {
+    "astro": "astro",
+    "build": "astro build",
+    "dev": "astro dev",
+    "netlify:dev": "netlify dev",
+    "preview": "astro preview"
+  },
+  "type": "module",
+  "version": "0.0.1"
 }
