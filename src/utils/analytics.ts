@@ -32,14 +32,13 @@ export function trackEvent(
 }
 
 /**
- * Track contact form submission using GA4 recommended 'generate_lead' event
+ * Track contact form submission (custom event to avoid GA4 Enhanced Measurement conflicts)
  * @param method - Contact method (e.g., 'email', 'phone')
  */
 export function trackContactFormSubmit(method: string = 'email'): void {
-  trackEvent('generate_lead', {
+  trackEvent('wortech_contact_submit', {
     method,
     form_name: 'contact_form',
-    value: 1,
   });
 }
 

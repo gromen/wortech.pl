@@ -116,11 +116,13 @@
         .then(function (response) {
           // Track successful form submission in Google Analytics 4
           if (window.gtag) {
-            window.gtag('event', 'generate_lead', {
+            window.gtag('event', 'wortech_contact_submit', {
               method: 'email',
               form_name: 'contact_form',
-              value: 1,
             });
+            console.log('[GA] wortech_contact_submit event sent');
+          } else {
+            console.warn('[GA] gtag not available');
           }
 
           status.textContent = 'Wiadomość została wysłana. Skontaktujemy się wkrótce!';
