@@ -81,6 +81,7 @@ const year = new Date().getFullYear();
       </p>
       <p class="mt-2 text-xs opacity-70">
         Realizacja: <a
+          id="author-link"
           href={siteConfig.author.linkedin}
           target="_blank"
           rel="noopener noreferrer"
@@ -96,3 +97,21 @@ const year = new Date().getFullYear();
     </div>
   </div>
 </footer>
+
+<script is:inline>
+  (function () {
+    var authorLink = document.getElementById('author-link');
+    if (!authorLink || authorLink.dataset.init) return;
+    authorLink.dataset.init = 'true';
+
+    authorLink.addEventListener('click', function () {
+      if (window.gtag) {
+        window.gtag('event', 'click', {
+          link_url: authorLink.href,
+          link_text: 'author_linkedin',
+          outbound: true,
+        });
+      }
+    });
+  })();
+</script>

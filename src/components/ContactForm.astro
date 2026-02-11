@@ -75,6 +75,18 @@
     const btnSpinner = document.getElementById('btn-spinner');
     const submitBtn = form.querySelector('button[type="submit"]');
 
+    // Track when user starts filling out the form
+    form.addEventListener('input', function () {
+      if (!form.dataset.startTracked) {
+        if (window.gtag) {
+          window.gtag('event', 'contact_form_start', {
+            form_name: 'contact',
+          });
+        }
+        form.dataset.startTracked = 'true';
+      }
+    }, { once: true });
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
@@ -96,17 +108,35 @@
         body: JSON.stringify(data),
       })
         .then(function (response) {
-          if (response.ok) {
-            status.textContent = 'Wiadomość została wysłana. Skontaktujemy się wkrótce!';
-            status.className = 'text-sm rounded-lg p-4 bg-green-500/10 text-green-400 light:bg-green-50 light:text-green-700';
-            form.reset();
-          } else {
-            throw new Error('Błąd serwera');
+          if (!response.ok) {
+            throw new Error('HTTP ' + response.status + ': ' + response.statusText);
           }
+          return response;
         })
-        .catch(function () {
-          status.textContent = 'Wystąpił błąd. Spróbuj ponownie lub skontaktuj się telefonicznie.';
+        .then(function (response) {
+          // Track successful form submission in Google Analytics 4
+          if (window.gtag) {
+            window.gtag('event', 'generate_lead', {
+              method: 'email',
+              form_name: 'contact_form',
+              value: 1,
+            });
+          }
+
+          status.textContent = 'Wiadomość została wysłana. Skontaktujemy się wkrótce!';
+          status.className = 'text-sm rounded-lg p-4 bg-green-500/10 text-green-400 light:bg-green-50 light:text-green-700';
+          status.classList.remove('hidden');
+          form.reset();
+        })
+        .catch(function (error) {
+          console.error('[ContactForm] Submission error:', error);
+          var isNetworkError = error instanceof TypeError;
+          var errorMessage = isNetworkError
+            ? 'Problem z połączeniem. Sprawdź swoją sieć i spróbuj ponownie.'
+            : 'Wystąpił błąd. Spróbuj ponownie lub skontaktuj się telefonicznie.';
+          status.textContent = errorMessage;
           status.className = 'text-sm rounded-lg p-4 bg-red-500/10 text-red-400 light:bg-red-50 light:text-red-700';
+          status.classList.remove('hidden');
         })
         .finally(function () {
           btnText.textContent = 'Wyślij wiadomość';
