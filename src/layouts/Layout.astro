@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import CookieConsent from '../components/CookieConsent.astro';
 
 interface Props {
   title: string;
@@ -9,7 +10,6 @@ interface Props {
 }
 
 const { title, description = 'WORTECH - Podwykonawstwo robót drogowych. Budowa nasypów, konstrukcje drogowe, roboty brukarskie, organizacja ruchu.' } = Astro.props;
-const gaId = import.meta.env.PUBLIC_GA_ID;
 ---
 
 <!doctype html>
@@ -23,18 +23,6 @@ const gaId = import.meta.env.PUBLIC_GA_ID;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
     <title>{title}</title>
-
-    {gaId && (
-      <>
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
-        <script define:vars={{ gaId }}>
-          window.dataLayer = window.dataLayer || [];
-          window.gtag = function(){dataLayer.push(arguments);};
-          window.gtag('js', new Date());
-          window.gtag('config', gaId);
-        </script>
-      </>
-    )}
 
     <script is:inline>
       (function() {
@@ -51,5 +39,6 @@ const gaId = import.meta.env.PUBLIC_GA_ID;
       <slot />
     </main>
     <Footer />
+    <CookieConsent />
   </body>
 </html>

@@ -1,0 +1,117 @@
+---
+const gaId = import.meta.env.PUBLIC_GA_ID;
+---
+
+<div
+  id="cookie-consent"
+  role="region"
+  aria-label="Zgoda na pliki cookies"
+  class="fixed bottom-0 left-0 right-0 z-40 translate-y-full transition-transform duration-500 ease-out md:p-0 p-4"
+>
+  <div
+    class="mx-auto max-w-5xl px-4 py-4 sm:px-6
+      m-4 rounded-2xl shadow-2xl backdrop-blur-sm
+      bg-white/95 text-gray-900
+      light:bg-gray-900/95 light:text-gray-100
+      border border-gray-200 light:border-gray-700"
+  >
+    <div
+      class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p class="text-sm leading-relaxed max-w-2xl">
+        Używamy plików cookies w celach analitycznych (Google Analytics), aby
+        lepiej zrozumieć, jak korzystasz z naszej strony.
+      </p>
+      <div class="flex items-center gap-3 shrink-0">
+        <button
+          id="cookie-reject"
+          type="button"
+          class="px-4 py-2 text-sm font-medium rounded-lg cursor-pointer
+            transition-colors
+            text-gray-600 hover:text-gray-900 hover:bg-gray-100
+            light:text-gray-400 light:hover:text-gray-100 light:hover:bg-gray-800"
+        >
+          Odrzuć
+        </button>
+        <button
+          id="cookie-accept"
+          type="button"
+          class="px-5 py-2 text-sm font-semibold rounded-lg cursor-pointer
+            transition-colors
+            bg-orange text-white hover:bg-orange-light"
+        >
+          Akceptuj
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline define:vars={{ gaId }}>
+  (function () {
+    var banner = document.getElementById("cookie-consent");
+    if (!banner || banner.dataset.init) return;
+    banner.dataset.init = "true";
+
+    function getCookie(name) {
+      var match = document.cookie.match(
+        new RegExp("(^| )" + name + "=([^;]+)"),
+      );
+      return match ? match[2] : null;
+    }
+
+    function setCookie(name, value) {
+      document.cookie =
+        name + "=" + value + "; max-age=31536000; path=/; SameSite=Lax; Secure";
+    }
+
+    function loadGA() {
+      if (!gaId || window.gtag) return;
+      var script = document.createElement("script");
+      script.async = true;
+      script.src = "https://www.googletagmanager.com/gtag/js?id=" + gaId;
+      document.head.appendChild(script);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () {
+        dataLayer.push(arguments);
+      };
+      window.gtag("js", new Date());
+      window.gtag("config", gaId);
+    }
+
+    function showBanner() {
+      requestAnimationFrame(function () {
+        banner.classList.remove("translate-y-full");
+        banner.classList.add("translate-y-0");
+      });
+    }
+
+    function hideBanner() {
+      banner.classList.remove("translate-y-0");
+      banner.classList.add("translate-y-full");
+    }
+
+    var consent = getCookie("cookie_consent");
+
+    if (consent === "accepted") {
+      loadGA();
+    } else if (!consent) {
+      showBanner();
+    }
+
+    document
+      .getElementById("cookie-accept")
+      .addEventListener("click", function () {
+        setCookie("cookie_consent", "accepted");
+        loadGA();
+        hideBanner();
+      });
+
+    document
+      .getElementById("cookie-reject")
+      .addEventListener("click", function () {
+        setCookie("cookie_consent", "rejected");
+        hideBanner();
+      });
+  })();
+</script>
